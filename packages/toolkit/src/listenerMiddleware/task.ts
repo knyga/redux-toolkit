@@ -1,11 +1,6 @@
 import { TaskAbortError } from './exceptions'
 import type { AbortSignalWithReason, TaskResult } from './types'
-import {
-  addAbortSignalListener,
-  removeAbortSignalListener,
-  catchRejection,
-  noop,
-} from './utils'
+import { addAbortSignalListener, catchRejection, noop } from './utils'
 
 /**
  * Synchronously raises {@link TaskAbortError} if the task tied to the input `signal` has been cancelled.
