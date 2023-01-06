@@ -208,9 +208,7 @@ export function fetchBaseQuery({
     let meta: FetchBaseQueryMeta | undefined
     let {
       url,
-      method = 'GET' as const,
       headers = new Headers(baseFetchOptions.headers),
-      body = undefined,
       params = undefined,
       responseHandler = 'json' as const,
       validateStatus = globalValidateStatus ?? defaultValidateStatus,
@@ -219,9 +217,7 @@ export function fetchBaseQuery({
     } = typeof arg == 'string' ? { url: arg } : arg
     let config: RequestInit = {
       ...baseFetchOptions,
-      method,
       signal,
-      body,
       ...rest,
     }
 
@@ -242,12 +238,12 @@ export function fetchBaseQuery({
         Array.isArray(body) ||
         typeof body.toJSON === 'function')
 
-    if (!config.headers.has('content-type') && isJsonifiable(body)) {
+    if (!config.headers.has('content-type') && isJsonifiable(config.body)) {
       config.headers.set('content-type', jsonContentType)
     }
 
-    if (isJsonifiable(body) && isJsonContentType(config.headers)) {
-      config.body = JSON.stringify(body)
+    if (isJsonifiable(config.body) && isJsonContentType(config.headers)) {
+      config.body = JSON.stringify(config.body)
     }
 
     if (params) {
